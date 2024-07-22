@@ -1,10 +1,11 @@
-import LoginLinks from '@/app/LoginLinks'
+'use client'
 
-export const metadata = {
-  title: 'Laravel'
-}
+import LoginLinks from '@/app/LoginLinks'
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 const Home = () => {
+  InstallData()
   return (
       <>
         <div className="relative flex items-top justify-center min-h-screen bg-gray-100 sm:items-center sm:pt-0">
@@ -274,3 +275,19 @@ const Home = () => {
 }
 
 export default Home
+
+function InstallData() {
+  const [data, setData] = useState(null)
+  const getData = async () => {
+    await axios
+        .get('http://localhost:8000/api/install')
+        .then(response => {
+          setData(response.data.users);
+        })
+  }
+  useEffect(() => {
+    getData()
+  }, [])
+
+  if (data === 0) window.location.replace('/install')
+}
