@@ -1,7 +1,9 @@
 <?php
 
+use function PHPUnit\Framework\assertNotNull;
+
 test('new users can register', function () {
-    $response = $this->post('/register', [
+    $response = $this->post('/api/register', [
         'name' => 'Test User',
         'email' => 'test@example.com',
         'password' => 'password',
@@ -11,6 +13,12 @@ test('new users can register', function () {
     ]);
 
     $this->assertAuthenticated();
+
+    $user = Auth::user();
+    $token = $user->tokens()->where('name', 'test@example.com')->pluck('token')->firstOrFail();
+
+    assertNotNull($token);
+
     $response->assertNoContent();
 
 });
