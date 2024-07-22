@@ -18,6 +18,14 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->string('profile_image')->nullable();
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('should_change_password')->default(false);
+            $table->string('storage_label')->unique();
+            $table->bigInteger('quota_size')->default(0);
+            $table->bigInteger('quota_usage')->default(0);
+            $table->string('status');
+            $table->softDeletes();
             $table->timestamps();
         });
 
