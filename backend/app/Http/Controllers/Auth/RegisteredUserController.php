@@ -36,6 +36,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        $request->user()->createToken($request->email);
+
         return response()->noContent();
     }
 }
