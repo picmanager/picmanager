@@ -3,12 +3,17 @@ import Link from 'next/link'
 const NavLink = ({ active = false, children, ...props }) => (
     <Link
         {...props}
-        className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out ${
-            active
-                ? 'border-indigo-400 text-gray-900 focus:border-indigo-700'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:text-gray-700 focus:border-gray-300'
-        }`}>
-        {children}
+        className={`flex h-14 w-full place-items-center justify-between gap-4 rounded-r-full py-3 
+            hover:cursor-pointer hover:bg-gray-200/50 hover:text-blue-500
+            group-hover:sm:px-5 md:px-5 hover:underline
+            ${active
+            ? 'text-blue-500 bg-gray-200'
+            : 'text-black'
+        }`}
+    >
+        <div className="flex w-full place-items-center gap-4 overflow-hidden truncate">
+            {children}
+        </div>
     </Link>
 )
 
