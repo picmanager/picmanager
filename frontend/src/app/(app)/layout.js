@@ -1,21 +1,19 @@
 'use client'
 
-import { useAuth } from '@/hooks/auth'
-import Navigation from '@/app/(app)/Navigation'
-import Loading from '@/app/(app)/Loading'
+import Navigation from '@/app/Navigation'
+import Header from '@/app/Header'
 
 const AppLayout = ({ children }) => {
-    const { user } = useAuth({ middleware: 'auth' })
-
-    if (!user) {
-        return <Loading />
-    }
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <Navigation user={user} />
-
-            <main>{children}</main>
+        <div className="flex flex-col min-h-screen bg-gray-100">
+            <Header />
+            <div className="max-w-6xl flex">
+                <Navigation/>
+                <main className="w-full">
+                    {children}
+                </main>
+            </div>
         </div>
     )
 }
