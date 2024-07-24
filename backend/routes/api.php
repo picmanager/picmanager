@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\UploadController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Models\User;
@@ -39,3 +40,6 @@ Route::get('/install', function () {
     $data=['users' => $users];
     return response()->json($data, 200);
 });
+
+Route::post('/upload', [UploadController::class, 'upload']);
+//    ->middleware('auth:sanctum');
