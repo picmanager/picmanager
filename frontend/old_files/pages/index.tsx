@@ -17,7 +17,7 @@ export default function Home() {
                         <Link href="https://github.com/NiclasTimmeDev/larave-nextjs-starter">
                             Documentation
                         </Link>
-                        <Link href="/user/login">Login</Link>
+                        <Link href="/login">Login</Link>
                         <Link href="/user/register">Register</Link>
                     </div>
                 </div>
