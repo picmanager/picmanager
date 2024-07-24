@@ -12,3 +12,14 @@ test('new users can register', function () {
     $response->assertNoContent();
 
 });
+
+test('user can upload file', function () {
+    $file = \Illuminate\Http\UploadedFile::fake()->image('test.png');
+   $response = $this->post('/api/upload', [
+       'file' => $file,
+   ]);
+//   storage_path('/app/avatars')
+   Storage::disk('local')->assertExists("/avatars/".$file->hashName());
+
+   $response->assertStatus(200);
+});
