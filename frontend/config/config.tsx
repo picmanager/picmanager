@@ -8,7 +8,18 @@
 | and port of your laravel api.
 |
 */
-import axios from "axios";
+import Axios from "axios";
+
+const axios = Axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_HOST_URL,
+    headers: {
+        'X-Requested-With': 'XMHttpRequest',
+    },
+    withCredentials: true,
+    withXSRFToken: true
+})
+
+export default axios
 // const axios = Axios.create({
 //     baseURL: process.env.NEXT_PUBLIC_API_HOST_URL,
 //     headers: {
@@ -18,9 +29,9 @@ import axios from "axios";
 //     withXSRFToken: true
 // })
 // // Configure axios in order to be able to make api requests to the laravel backend.
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_HOST_URL;
+// axios.defaults.withCredentials = true;
+// axios.defaults.withXSRFToken = true;
+// axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_HOST_URL;
 // axios.defaults.headers = { 'X-Requested-With': 'XMLHttpRequest'};
 
 /*
@@ -35,13 +46,13 @@ axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_HOST_URL;
 | will lead to a redirect if the user is not authenticated.
 |
 */
-export const protectedRoutes: string[] = [
+// export const protectedRoutes: string[] = [
     // @ts-ignore
-    process.env.NEXT_PUBLIC_USER_HOME_ROUTE, // -> from .env.local
+    // process.env.NEXT_PUBLIC_USER_HOME_ROUTE, // -> from .env.local
     // "/profile",
     // "/account",
     // ...,
-];
+// ];
 
 
 
