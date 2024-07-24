@@ -1,13 +1,13 @@
 'use client'
 
 import Link from "next/link";
-import {useAuth} from "../../hooks/auth";
+import {useAuth} from "../../../hooks/auth";
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
-import Button from "../../components/Button/Button";
-import Label from "../../components/Label/Label";
-import Input from "../../components/Input/Input";
-import InputError from "../../components/InputError/InputError";
+import Button from "../../../components/Button/Button";
+import Label from "../../../components/Label/Label";
+import Input from "../../../components/Input/Input";
+import InputError from "../../../components/InputError/InputError";
 // import AuthSessionStatus from "AuthSessionStatus";
 
 const Login = () => {
@@ -46,10 +46,11 @@ const Login = () => {
 
     return (
         <>
+            <h2 className="text-2xl font-bold">Login</h2>
             <div className="font-medium text-sm text-green-600 mb-4">
                 {status}
             </div>
-            <form onSubmit={submitForm}>
+            <form onSubmit={submitForm} className="w-2/3">
                 {/* Email Address */}
                 <div>
                     <Label htmlFor="email" className="">Email</Label>
