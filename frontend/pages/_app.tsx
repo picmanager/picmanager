@@ -8,16 +8,16 @@ import * as types from "./../store/actionTypes";
 import { Navigation } from "../components/Navigation/Navigation";
 import { Header } from "../components/Header/Header";
 import { useRouter } from "next/router";
-import { protectedRoutes } from "../config/config";
+// import { protectedRoutes } from "../config/config";
 import { ChakraProvider } from "@chakra-ui/react";
 require("./../config/config.tsx");
 
 function MyApp(props: any) {
     const router = useRouter();
     // Check fi we are on a protected route.
-    const isNoProtectedRoute = protectedRoutes.every((route) => {
-        return !router.pathname.startsWith(route);
-    });
+    // const isNoProtectedRoute = protectedRoutes.every((route) => {
+    //     return !router.pathname.startsWith(route);
+    // });
 
     // Handle current user in redux.
     useEffect(() => {
@@ -44,7 +44,7 @@ function MyApp(props: any) {
                     <div className="flex">
                         <Navigation />
                         <props.Component {...props.pageProps} />
-                        {isNoProtectedRoute}
+                        {/*{isNoProtectedRoute}*/}
                     </div>
                 </div>
             </ChakraProvider>

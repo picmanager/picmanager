@@ -1,7 +1,7 @@
-import useSWR from 'swr'
-import axios from '@/lib/axios'
-import { useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import useSWR from "swr";
+import axios from "../config/config";
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
@@ -26,7 +26,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setErrors([])
 
         axios
-            .post('/api/register', props)
+            .post('/register', props)
             .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -51,7 +51,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             })
     }
 
-    const forgotPassword = async ({ setErrors, setStatus, email}) => {
+    const forgotPassword = async ({ setErrors, setStatus, email }) => {
         await csrf()
 
         setErrors([])
@@ -93,7 +93,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const logout = async () => {
         if (!error) {
-            await axios.post('/api/logout').then(() => mutate())
+            await axios.post('/logout').then(() => mutate())
         }
 
         window.location.pathname = '/login'
@@ -108,7 +108,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         )
             router.push(redirectIfAuthenticated)
         if (middleware === 'auth' && error) logout()
-    }, [user, error])
+    }, [user, error]);
 
     return {
         user,

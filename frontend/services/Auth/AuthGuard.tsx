@@ -8,20 +8,20 @@
 */
 import axios from "axios";
 import { IncomingMessage, ServerResponse} from "http";
-import { protectedRoutes } from "../../config/config";
+// import { protectedRoutes } from "../../config/config";
 
 export class AuthGuard {
     /**
      * An array of routes that should not be accessible by unauthenticated users.
      */
-    private protectedRoutes: string[];
+    // private protectedRoutes: string[];
 
     /**
      * The constructor function.
      */
-    constructor() {
-        this.protectedRoutes = protectedRoutes;
-    }
+    // constructor() {
+    //     this.protectedRoutes = protectedRoutes;
+    // }
 
     /**
      * Get the current user from the database and
@@ -88,29 +88,29 @@ export class AuthGuard {
         res: ServerResponse,
         pathname: string
     ) {
-        const isNoProtectedRoute = this.isNoProtectedRoute(pathname);
+        // const isNoProtectedRoute = this.isNoProtectedRoute(pathname);
         try {
             // CSRF.
             await axios.get("/sanctum/csrf-cookie");
 
             // If there are no cookies and the route is protected, redirect to login.
-            if (!req.headers.cookie && !isNoProtectedRoute) {
-                /**
-                 * No further redirect if we are already on the login path,
-                 * as we otherwise would be caught in an infinite
-                 * loop of redirections to /user/login.
-                 */
-                if (pathname === "/user/login") {
-                    res.end()
-                    return {user: false};
-                }
-
-                res.writeHead(302, {
-                    Location: "/user/login",
-                });
-                res.end();
-                return {user: false};
-            }
+            // if (!req.headers.cookie && !isNoProtectedRoute) {
+            //     /**
+            //      * No further redirect if we are already on the login path,
+            //      * as we otherwise would be caught in an infinite
+            //      * loop of redirections to /user/login.
+            //      */
+            //     if (pathname === "/user/login") {
+            //         res.end()
+            //         return {user: false};
+            //     }
+            //
+            //     res.writeHead(302, {
+            //         Location: "/user/login",
+            //     });
+            //     res.end();
+            //     return {user: false};
+            // }
 
             /**
              * As the API call is executed on the server
@@ -148,13 +148,13 @@ export class AuthGuard {
              * Redirect to login if user is not authenticated and tries to access
              * a protected route
              */
-            else if (!currentUser && !isNoProtectedRoute) {
-                res.writeHead(302, {
-                    Location: "/user/login",
-                });
-                res.end();
-                return {user: false};
-            }
+            // else if (!currentUser && !isNoProtectedRoute) {
+            //     res.writeHead(302, {
+            //         Location: "/user/login",
+            //     });
+            //     res.end();
+            //     return {user: false};
+            // }
 
             // Return the currently authenticated user.
             return {
@@ -166,21 +166,21 @@ export class AuthGuard {
              * the API will send a 401 response. If we're on a
              * protected route, redirect to the login page.
              */
-            if (
-                // @ts-ignore
-                error.response &&
-                // @ts-ignore
-                error.response.status === 401 &&
-                !isNoProtectedRoute
-            ) {
-                if (pathname === "/user/login") {
-                    return {user: false};
-                }
-                res.writeHead(302, {
-                    Location: "/user/login",
-                });
-                res.end();
-            }
+            // if (
+            //     // @ts-ignore
+            //     error.response &&
+            //     // @ts-ignore
+            //     error.response.status === 401 &&
+            //     !isNoProtectedRoute
+            // ) {
+            //     if (pathname === "/user/login") {
+            //         return {user: false};
+            //     }
+            //     res.writeHead(302, {
+            //         Location: "/user/login",
+            //     });
+            //     res.end();
+            // }
             return {user: false};
         }
     }
@@ -194,9 +194,9 @@ export class AuthGuard {
      * @return {boolean}
      *  True if it is a protected route.
      */
-    public isNoProtectedRoute(pathname: string): boolean {
-        return this.protectedRoutes.every((route) => {
-            return !pathname.startsWith(route);
-        });
-    }
+    // public isNoProtectedRoute(pathname: string): boolean {
+    //     return this.protectedRoutes.every((route) => {
+    //         return !pathname.startsWith(route);
+    //     });
+    // }
 }

@@ -1,25 +1,25 @@
 'use client'
 
-import Button from '@/components/Button'
-import Input from '@/components/Input'
-import InputError from '@/components/InputError'
-import Label from '@/components/Label'
-import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
+import Link from "next/link";
+import {useAuth} from "../../hooks/auth";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/navigation";
+import Button from "../../components/Button/Button";
+import Label from "../../components/Label/Label";
+import Input from "../../components/Input/Input";
+import InputError from "../../components/InputError/InputError";
+// import AuthSessionStatus from "AuthSessionStatus";
 
 const Login = () => {
     const router = useRouter()
 
-    const { login } = useAuth({
+    const {login} = useAuth({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
     })
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [shouldRemember, setShouldRemember] = useState(false)
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
@@ -30,7 +30,7 @@ const Login = () => {
         } else {
             setStatus(null)
         }
-    })
+    }, [router.reset, errors.length]);
 
     const submitForm = async event => {
         event.preventDefault()
@@ -46,12 +46,13 @@ const Login = () => {
 
     return (
         <>
-            <AuthSessionStatus className="mb-4" status={status} />
+            <div className="font-medium text-sm text-green-600 mb-4">
+                {status}
+            </div>
             <form onSubmit={submitForm}>
                 {/* Email Address */}
                 <div>
-                    <Label htmlFor="email">Email</Label>
-
+                    <Label htmlFor="email" className="">Email</Label>
                     <Input
                         id="email"
                         type="email"
@@ -61,10 +62,8 @@ const Login = () => {
                         required
                         autoFocus
                     />
-
-                    <InputError messages={errors.email} className="mt-2" />
+                    <InputError messages={errors.email} className="mt-2"/>
                 </div>
-
                 {/* Password */}
                 <div className="mt-4">
                     <Label htmlFor="password">Password</Label>
@@ -105,7 +104,6 @@ const Login = () => {
                         </span>
                     </label>
                 </div>
-
                 <div className="flex items-center justify-end mt-4">
                     <Link
                         href="/forgot-password"
