@@ -1,10 +1,10 @@
-import "../styles/globals.css";
-import {Header} from "../components/Header/Header";
-import {Navigation} from "../components/Navigation/Navigation";
+import "../../styles/globals.css";
+import {Header} from "../../components/Header/Header";
+import {Navigation} from "../../components/Navigation/Navigation";
 import React from "react";
 
 const RootLayout = ({ children }) => {
-  return (
+    return (
       <html lang="en">
         <body className="antialiased">
           <div className="flex flex-col bg-gray-100">
