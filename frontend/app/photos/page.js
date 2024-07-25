@@ -1,9 +1,19 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {useMedia} from "../../hooks/media";
+import NeedInstall from "../../config/NeedInstall";
+import {redirect} from "next/navigation";
+
 
 const FileUploadForm = () => {
+    const install = NeedInstall()
+
+    useLayoutEffect(() => {
+        if(install === 0){
+            redirect("/install")
+        }
+    }, [install]);
 
     const {uploadFile} = useMedia({})
 
