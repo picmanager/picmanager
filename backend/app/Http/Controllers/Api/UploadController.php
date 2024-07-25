@@ -3,32 +3,32 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UploadMediaRequest;
 use App\Models\Media;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
 
 class UploadController extends Controller
 {
-    public function upload(Request $request): JsonResponse
+    public function upload(UploadMediaRequest $request): JsonResponse
     {
-        $file = $request->file("file");
+        $validated = $request->validated();
+
+        $file = $validated["file"];
         $name = $file->hashName();
 
-        $upload = Storage::put("avatars/", $file);
+        $user = auth()->user();
+
+        $upload = Storage::put("media/" . $user->email . '/', $file);
 
         Media::query()->create(
             attributes: [
                 'name' => "{$name}",
                 'file_name' => $file->getClientOriginalName(),
                 'mime_type' => $file->getClientMimeType(),
-                'path' => "avatars/{$name}",
+                'path' => "media/{$name}",
                 'disk' => 'local',
-                'file_hash' => hash_file(
-                    'sha256',
-                    storage_path("app/avatars/{$name}",
-                    ),
-                ),
                 'collection' => $request->get('collection'),
                 'size' => $file->getSize(),
             ],

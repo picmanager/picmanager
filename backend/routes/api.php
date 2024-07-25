@@ -41,5 +41,5 @@ Route::get('/install', function () {
     return response()->json($data, 200);
 });
 
-Route::post('/upload', [UploadController::class, 'upload']);
-//    ->middleware('auth:sanctum');
+Route::post('/upload', [UploadController::class, 'upload'])
+    ->middleware('auth:sanctum');
