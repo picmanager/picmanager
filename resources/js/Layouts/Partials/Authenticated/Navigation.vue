@@ -1,0 +1,188 @@
+<script setup lang="ts">
+import NavLink from "@/Components/Authenticated/NavLink.vue";
+import {
+    PhotoIcon,
+    MagnifyingGlassIcon,
+    MapIcon,
+    ShareIcon,
+    HeartIcon,
+    DocumentTextIcon,
+    BriefcaseIcon,
+    ArchiveBoxIcon,
+    TrashIcon,
+} from "@heroicons/vue/24/outline";
+</script>
+
+<template>
+    <section
+        id="sidebar"
+        class="group relative z-10 flex w-18 flex-col gap-1 overflow-y-auto pt-8 transition-all duration-200
+            hover:sm:w-64 hover:sm:border-r hover:sm:pr-6 hover:sm:shadow-2xl md:w-64 md:pr-6 hover:md:border-none
+            hover:md:shadow-none"
+    >
+        <nav aria-label="Primary">
+            <NavLink
+                :href="route('media.index')"
+                :active="route().current('media.index')"
+            >
+                <PhotoIcon class="size-6"/>
+                <span class="text-sm font-medium">Photos</span>
+            </NavLink>
+
+            <NavLink
+                :href="route('media.explore')"
+                :active="route().current('media.explore')"
+            >
+                <MagnifyingGlassIcon class="size-6"/>
+                <span class="text-sm font-medium">Explore</span>
+            </NavLink>
+
+            <NavLink
+                :href="route('media.map')"
+                :active="route().current('media.map')"
+            >
+                <MapIcon class="size-6"/>
+                <span class="text-sm font-medium">Map</span>
+            </NavLink>
+
+            <NavLink
+                :href="route('media.share')"
+                :active="route().current('media.share')"
+            >
+                <ShareIcon class="size-6"/>
+                <span class="text-sm font-medium">Share</span>
+            </NavLink>
+
+            <div class="text-xs transition-all duration-200">
+                <p class="hidden p-6 group-hover:sm:block md:block">LIBRARY</p>
+                <hr class="mx-4 mb-[31px] mt-8 block group-hover:sm:hidden md:hidden"/>
+            </div>
+
+            <NavLink
+                :href="route('media.favorites')"
+                :active="route().current('media.favorites')"
+            >
+                <HeartIcon class="size-6"/>
+                <span class="text-sm font-medium">Favorites</span>
+            </NavLink>
+
+            <NavLink
+                :href="route('media.albums')"
+                :active="route().current('media.albums')"
+            >
+                <DocumentTextIcon class="size-6"/>
+                <span class="text-sm font-medium">Albums</span>
+            </NavLink>
+
+            <NavLink
+                :href="route('media.utilities')"
+                :active="route().current('media.utilities')"
+            >
+                <BriefcaseIcon class="size-6"/>
+                <span class="text-sm font-medium">Utilities</span>
+            </NavLink>
+
+            <NavLink
+                :href="route('media.archive')"
+                :active="route().current('media.archive')"
+            >
+                <ArchiveBoxIcon class="size-6"/>
+                <span class="text-sm font-medium">Archive</span>
+            </NavLink>
+
+            <NavLink
+                :href="route('media.trash')"
+                :active="route().current('media.trash')"
+            >
+                <TrashIcon class="size-6"/>
+                <span class="text-sm font-medium">Trash</span>
+            </NavLink>
+        </nav>
+        <div class="mt-auto">
+            <div
+                class="hidden md:block storage-status p-4 bg-gray-100 ml-4 rounded-lg text-sm"
+                title="106.358 GiB of 475.353 GiB used"
+            >
+                <div class="hidden group-hover:sm:block md:block">
+                    <p class="font-medium">
+                        Storage space
+                    </p>
+                    <p class="text-gray-500">
+                        106.4 GiB of 475.4 GiB used
+                    </p>
+                    <div class="mt-4 h-[7px] w-full rounded-full bg-gray-200">
+                        <div
+                            class="h-[7px] rounded-full"
+                        >
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--        <div class="mb-2">-->
+<!--            <div class="hidden md:block license-status pl-4 text-sm">-->
+<!--                <button-->
+<!--                    type="button"-->
+<!--                    class="py-3 px-2 flex justify-between place-items-center place-content-center border border-gray-300-->
+<!--                        mt-2 rounded-lg shadow-sm"-->
+<!--                >-->
+<!--                    <span class="flex place-items-center place-content-center gap-1">-->
+<!--                        <svg-->
+<!--                            width="18"-->
+<!--                            height="18"-->
+<!--                            viewBox="0 0 24 24"-->
+<!--                            role="img"-->
+<!--                        >-->
+<!--                            <path-->
+<!--                                d="M9 10A3.04 3.04 0 0 1 12 7A3.04 3.04 0 0 1 15 10A3.04 3.04 0 0 1 12 13A3.04 3.04 0 0-->
+<!--                                    1 9 10M12 19L16 20V16.92A7.54 7.54 0 0 1 12 18A7.54 7.54 0 0 1 8 16.92V20M12 4A5.78-->
+<!--                                    5.78 0 0 0 7.76 5.74A5.78 5.78 0 0 0 6 10A5.78 5.78 0 0 0 7.76 14.23A5.78 5.78 0 0 0-->
+<!--                                    12 16A5.78 5.78 0 0 0 16.24 14.23A5.78 5.78 0 0 0 18 10A5.78 5.78 0 0 0 16.24-->
+<!--                                    5.74A5.78 5.78 0 0 0 12 4M20 10A8.04 8.04 0 0 1 19.43 12.8A7.84 7.84 0 0 1 18-->
+<!--                                    15.28V23L12 21L6 23V15.28A7.9 7.9 0 0 1 4 10A7.68 7.68 0 0 1 6.33 4.36A7.73 7.73 0 0-->
+<!--                                    1 12 2A7.73 7.73 0 0 1 17.67 4.36A7.68 7.68 0 0 1 20 10Z"-->
+<!--                                fill="currentColor"-->
+<!--                            />-->
+<!--                        </svg>-->
+<!--                        <p>Unlicensed</p>-->
+<!--                    </span>-->
+<!--                    <div class="flex place-items-center gap-[2px] font-medium">-->
+<!--                        Buy-->
+<!--                        <span role="contentinfo">-->
+<!--                                <svg-->
+<!--                                    width="1em"-->
+<!--                                    height="1em"-->
+<!--                                    viewBox="0 0 24 24"-->
+<!--                                    class=" "-->
+<!--                                    role="img"-->
+<!--                                >-->
+<!--                                    <path-->
+<!--                                        d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4-->
+<!--                                            12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0-->
+<!--                                            0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0-->
+<!--                                            12,2M11,17H13V11H11V17Z"-->
+<!--                                        fill="currentColor"-->
+<!--                                    />-->
+<!--                                </svg>-->
+<!--                            </span>-->
+<!--                    </div>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="mb-6">
+            <div
+                class="text-sm hidden group-hover:sm:flex md:flex pl-5 pr-1 place-items-center
+                        place-content-center justify-between"
+            >
+                <div class="flex gap-2 place-items-center place-content-center">
+                    <div class="w-[7px] h-[7px] bg-green-500 rounded-full"></div>
+                    <p class="">Server Online</p>
+                </div>
+                <div class="flex justify-between justify-items-center">
+                    <button type="button" class="">v0.1-dev</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>
