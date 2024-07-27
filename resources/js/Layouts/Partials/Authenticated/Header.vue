@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Dropdown from "@/Components/Authenticated/Dropdown.vue";
 import DropdownLink from "@/Components/Authenticated/DropdownLink.vue";
+import MediaUpload from "@/Components/Authenticated/MediaUpload.vue";
 </script>
 
 
@@ -118,26 +119,8 @@ import DropdownLink from "@/Components/Authenticated/DropdownLink.vue";
                     />
                 </svg>
             </button>
-            <div>
-                <button
-                    type="button"
-                    title=""
-                    class="inline-flex items-center justify-center transition-colors disabled:cursor-not-allowed
-                        disabled:opacity-60 enabled:hover:text-gray-700 enabled:hover: p-2 font-medium rounded-lg"
-                >
-                    <span class="flex gap-2">
-                        <svg width="1.5em" height="1.5em" viewBox="0 0 24 24" class=" " role="img">
-                            <path
-                                d="M2 12H4V17H20V12H22V17C22 18.11 21.11 19 20 19H4C2.9 19 2 18.11 2
-                                    17V12M12 2L6.46 7.46L7.88 8.88L11 5.75V15H13V5.75L16.13 8.88L17.55 7.45L12 2Z"
-                                fill="currentColor"
-                            />
-                        </svg>
-                        <span class="hidden md:block">Upload</span>
-                    </span>
-                </button>
-            </div>
-
+            <!-- Upload Button -->
+            <MediaUpload :showPhoto="false" :showBanner="true"/>
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative">
