@@ -14,7 +14,7 @@ test('user can upload file', function () {
             'file' => $file,
         ]);
 
-    Storage::disk('local')->assertExists("/media/{$user->id}/{$file->hashName()}");
+    Storage::disk('picmanager')->assertExists($file->hashName());
 
     $response->assertStatus(200);
 });
