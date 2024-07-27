@@ -29,6 +29,10 @@ return [
     */
 
     'disks' => [
+        'picmanager' => [
+            'driver' => 'local',
+            'root' => storage_path('app/picmanager'),
+        ],
 
         'local' => [
             'driver' => 'local',
