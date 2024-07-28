@@ -40,6 +40,7 @@ class HomeController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'storage_label' => 'admin',
         ]);
 
         event(new Registered($user));
