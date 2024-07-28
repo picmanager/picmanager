@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Symfony\Component\Process\Process;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -29,12 +30,18 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $disk['total'] = round(((disk_total_space('/')) / 1024 / 1024 / 1024), 2);
+        $disk['free'] = round(((disk_free_space('/')) / 1024 / 1024 / 1024), 2);
+        $disk['used'] = round(($disk['total'] - $disk['free']), 2);
+        $disk['usedPercent'] = round(($disk['total'] - $disk['free']) / $disk['total'] * 100, 2);
+
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
             ],
             'status' => fn () => $request->session()->get('status'),
+            'disk' => fn () => $disk,
         ];
     }
 }

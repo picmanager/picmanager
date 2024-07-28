@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DiskSpaceController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProfileController;

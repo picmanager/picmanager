@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {usePage} from "@inertiajs/vue3";
 import NavLink from "@/Components/Authenticated/NavLink.vue";
 import {
     PhotoIcon,
@@ -11,6 +12,13 @@ import {
     ArchiveBoxIcon,
     TrashIcon,
 } from "@heroicons/vue/24/outline";
+
+defineProps<{
+    mustVerifyEmail?: boolean;
+    status?: string;
+}>();
+
+const disk: any = usePage().props.disk;
 </script>
 
 <template>
@@ -101,21 +109,16 @@ import {
         <div class="mt-auto">
             <div
                 class="hidden md:block storage-status p-4 bg-gray-100 ml-4 rounded-lg text-sm"
-                title="106.358 GiB of 475.353 GiB used"
             >
                 <div class="hidden group-hover:sm:block md:block">
                     <p class="font-medium">
                         Storage space
                     </p>
                     <p class="text-gray-500">
-                        106.4 GiB of 475.4 GiB used
+                        {{ disk['used'] }} GiB of {{ disk['total'] }}GiB used
                     </p>
-                    <div class="mt-4 h-[7px] w-full rounded-full bg-gray-200">
-                        <div
-                            class="h-[7px] rounded-full"
-                        >
-
-                        </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-4">
+                        <div class="bg-blue-600 h-2 rounded-full" :style="'width: '+ disk['usedPercent'] +'%'"></div>
                     </div>
                 </div>
             </div>
