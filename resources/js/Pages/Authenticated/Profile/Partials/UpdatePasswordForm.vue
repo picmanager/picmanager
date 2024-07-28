@@ -1,97 +1,107 @@
 <script setup lang="ts">
-import DangerButton from '@/Components/Authenticated/DangerButton.vue';
 import InputError from '@/Components/Authenticated/InputError.vue';
 import InputLabel from '@/Components/Authenticated/InputLabel.vue';
-import Modal from '@/Components/Authenticated/Modal.vue';
-import SecondaryButton from '@/Components/Authenticated/SecondaryButton.vue';
+import PrimaryButton from '@/Components/Authenticated/PrimaryButton.vue';
 import TextInput from '@/Components/Authenticated/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
-import { nextTick, ref } from 'vue';
+import { ref } from 'vue';
 
-const confirmingUserDeletion = ref(false);
 const passwordInput = ref<HTMLInputElement | null>(null);
+const currentPasswordInput = ref<HTMLInputElement | null>(null);
 
 const form = useForm({
+    current_password: '',
     password: '',
+    password_confirmation: '',
 });
 
-const confirmUserDeletion = () => {
-    confirmingUserDeletion.value = true;
-
-    nextTick(() => passwordInput.value?.focus());
-};
-
-const deleteUser = () => {
-    form.delete(route('profile.destroy'), {
+const updatePassword = () => {
+    form.put(route('password.update'), {
         preserveScroll: true,
-        onSuccess: () => closeModal(),
-        onError: () => passwordInput.value?.focus(),
-        onFinish: () => {
+        onSuccess: () => {
             form.reset();
         },
+        onError: () => {
+            if (form.errors.password) {
+                form.reset('password', 'password_confirmation');
+                passwordInput.value?.focus();
+            }
+            if (form.errors.current_password) {
+                form.reset('current_password');
+                currentPasswordInput.value?.focus();
+            }
+        },
     });
-};
-
-const closeModal = () => {
-    confirmingUserDeletion.value = false;
-
-    form.reset();
 };
 </script>
 
 <template>
-    <section class="space-y-6">
+    <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Delete Account</h2>
+            <h2 class="text-lg font-medium text-gray-900">Update Password</h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting
-                your account, please download any data or information that you wish to retain.
+            <p class="mt-1 text-sm text-gray-600">
+                Ensure your account is using a long, random password to stay secure.
             </p>
         </header>
 
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
+        <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
+            <div>
+                <InputLabel for="current_password" value="Current Password" />
 
-        <Modal :show="confirmingUserDeletion" @close="closeModal">
-            <div class="p-6">
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Are you sure you want to delete your account?
-                </h2>
+                <TextInput
+                    id="current_password"
+                    ref="currentPasswordInput"
+                    v-model="form.current_password"
+                    type="password"
+                    class="mt-1 block w-full"
+                    autocomplete="current-password"
+                />
 
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Once your account is deleted, all of its resources and data will be permanently deleted. Please
-                    enter your password to confirm you would like to permanently delete your account.
-                </p>
-
-                <div class="mt-6">
-                    <InputLabel for="password" value="Password" class="sr-only" />
-
-                    <TextInput
-                        id="password"
-                        ref="passwordInput"
-                        v-model="form.password"
-                        type="password"
-                        class="mt-1 block w-3/4"
-                        placeholder="Password"
-                        @keyup.enter="deleteUser"
-                    />
-
-                    <InputError :message="form.errors.password" class="mt-2" />
-                </div>
-
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
-
-                    <DangerButton
-                        class="ms-3"
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                        @click="deleteUser"
-                    >
-                        Delete Account
-                    </DangerButton>
-                </div>
+                <InputError :message="form.errors.current_password" class="mt-2" />
             </div>
-        </Modal>
+
+            <div>
+                <InputLabel for="password" value="New Password" />
+
+                <TextInput
+                    id="password"
+                    ref="passwordInput"
+                    v-model="form.password"
+                    type="password"
+                    class="mt-1 block w-full"
+                    autocomplete="new-password"
+                />
+
+                <InputError :message="form.errors.password" class="mt-2" />
+            </div>
+
+            <div>
+                <InputLabel for="password_confirmation" value="Confirm Password" />
+
+                <TextInput
+                    id="password_confirmation"
+                    v-model="form.password_confirmation"
+                    type="password"
+                    class="mt-1 block w-full"
+                    autocomplete="new-password"
+                />
+
+                <InputError :message="form.errors.password_confirmation" class="mt-2" />
+            </div>
+
+            <div class="flex items-center gap-4">
+                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+
+                <Transition
+                    enter-active-class="transition ease-in-out"
+                    enter-from-class="opacity-0"
+                    leave-active-class="transition ease-in-out"
+                    leave-to-class="opacity-0"
+                >
+                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                </Transition>
+            </div>
+        </form>
     </section>
 </template>

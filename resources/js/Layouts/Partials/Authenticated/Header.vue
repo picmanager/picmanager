@@ -2,8 +2,9 @@
 import Dropdown from "@/Components/Authenticated/Dropdown.vue";
 import DropdownLink from "@/Components/Authenticated/DropdownLink.vue";
 import MediaUpload from "@/Components/Authenticated/MediaUpload.vue";
-</script>
+import ThemeSwitch from "@/Layouts/Partials/Authenticated/ThemeSwitch.vue";
 
+</script>
 
 <template>
     <header class="h-20 w-full border-b border-gray-300 grid grid-cols-3 items-center">
@@ -99,26 +100,10 @@ import MediaUpload from "@/Components/Authenticated/MediaUpload.vue";
                     </svg>
                 </button>
             </a>
-            <button
-                title="Toggle theme"
-                type="button"
-                class="flex place-content-center place-items-center rounded-full bg-transparent
-                    hover:bg-[#d3d3d3] p-3 transition-all"
-            >
-                <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 20 20"
-                    class=" "
-                    role="img"
-                    aria-label="Toggle theme"
-                >
-                    <path
-                        d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-                        fill="currentColor"
-                    />
-                </svg>
-            </button>
+
+            <!-- Theme Switch -->
+            <ThemeSwitch :showBanner="true"/>
+
             <!-- Upload Button -->
             <MediaUpload :showPhoto="false" :showBanner="true"/>
             <div class="hidden sm:flex sm:items-center sm:ms-6">

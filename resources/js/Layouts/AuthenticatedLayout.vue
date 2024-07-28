@@ -7,7 +7,7 @@ const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
-    <div class="flex flex-col bg-gray-100 min-h-screen">
+    <div class="flex flex-col bg-gray-100 dark:bg-yellow-500 min-h-screen">
         <Header/>
         <div class="flex">
             <Navigation />
