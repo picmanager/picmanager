@@ -14,9 +14,9 @@ class MediaController extends Controller
      */
     public function index()
     {
-        $photos = Media::all()->where('user_id', auth()->user()->id)->sortByDesc('original_date');
+
         return Inertia::render('Authenticated/Photos', [
-            'photos' => $photos,
+            'data' => $this->getData(),
         ]);
     }
 
@@ -64,5 +64,40 @@ class MediaController extends Controller
         $media->delete();
 
         return response()->json();
+    }
+
+    private function getData()
+    {
+        $data = [];
+        $photoDates = [];
+
+        $photos = Media::all()
+            ->where('user_id', auth()->user()->id)
+            ->sortByDesc('original_date');
+
+        foreach ($photos as $photo) {
+            $photoDates[] .= $photo['original_date'];
+        }
+
+        $dates = array_values(array_unique($photoDates));
+        foreach ($dates as $key => $date) {
+            $dates[$key] = date("D, j M Y", strtotime($date));
+        }
+
+        foreach ($dates as $key => $date) {
+            $data[$key]['date'] = $date;
+            $data[$key]['photos'] = [];
+        }
+        foreach ($dates as $key => $date) {
+            $time = date("Y-m-d", strtotime($date));
+            $photo = Media::query()
+                ->where('user_id', auth()->user()->id)
+                ->where('original_date', 'like', '%' . $time . '%')->get();
+            foreach ($photo as $result) {
+                $data[$key]['photos'][] = $result['name'];
+            }
+        }
+
+        return $data;
     }
 }
