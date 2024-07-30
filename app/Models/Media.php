@@ -11,11 +11,6 @@ class Media extends Model
         'user_id',
         'name',
         'file_name',
-        'mime_type',
-        'path',
-        'img_url',
-        'disk',
-        'collection',
         'size',
         'original_date'
     ];

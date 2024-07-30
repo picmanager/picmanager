@@ -8,6 +8,7 @@ defineProps<{
 
 const form = useForm({
     file: File,
+    time: Date,
 });
 
 const submit = () => {
@@ -18,7 +19,9 @@ function onFileChanged($event: Event) {
     const target = $event.target as HTMLInputElement;
     if (target && target.files) {
         form.file = target.files[0];
+        form.time = form.file.lastModified;
     }
+
     submit();
 }
 
