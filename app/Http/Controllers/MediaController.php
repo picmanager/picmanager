@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MediaRequest;
 use App\Models\Media;
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -22,30 +24,31 @@ class MediaController extends Controller
 
     public function store(MediaRequest $request)
     {
-        $ctime = ($request['time'] / 1000);
+        $cTimes = $request['ctimes'];
 
         $validated = $request->validated();
-        $file = $validated['file'];
-
-        $name = $file->hashName();
-
+        $images = $validated['images'];
         $user = auth()->user();
 
-        $exifDate = @exif_read_data($file)['DateTimeOriginal'];
+        foreach ($images as $key => $image) {
+            $name = $image->hashName();
+            $exifDate = @exif_read_data($image)['DateTimeOriginal'];
+            $upload = Storage::put("/", $image);
 
-        $upload = Storage::put("/", $file);
-        if ($exifDate === null) {
-            $original_date = gmdate("Y-m-d H:i:s", $ctime);
-        } else {
-            $original_date = $exifDate;
+            if ($exifDate === null) {
+                $original_date = gmdate("Y-m-d H:i:s", ($cTimes[$key]['ctime'] / 1000));
+            } else {
+                $original_date = $exifDate;
+            }
+
+            Media::create([
+                'user_id' => $user->id,
+                'name' => $name,
+                'file_name' => $image->getClientOriginalName(),
+                'size' => $image->getSize(),
+                'original_date' => $original_date,
+            ]);
         }
-        Media::create([
-            'user_id' => $user->id,
-            'name' => $name,
-            'file_name' => $file->getClientOriginalName(),
-            'size' => $file->getSize(),
-            'original_date' => $original_date,
-        ]);
 
         return back()->with('status', 'Image Uploaded Successfully');
     }
@@ -79,7 +82,7 @@ class MediaController extends Controller
             ->sortByDesc('original_date');
 
         foreach ($photos as $photo) {
-            $photoDates[] .= $photo['original_date'];
+            $photoDates[] .= date("Y-m-d", strtotime($photo['original_date']));
         }
 
         $dates = array_values(array_unique($photoDates));
