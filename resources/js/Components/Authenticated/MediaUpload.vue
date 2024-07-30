@@ -31,6 +31,7 @@ function onFileChanged($event: Event) {
         @change="onFileChanged($event)"
         id="file"
         type="file"
+        multiple
         ref="file"
         class="hidden"
         required
