@@ -22,6 +22,8 @@ class MediaController extends Controller
 
     public function store(MediaRequest $request)
     {
+        $ctime = ($request['time'] / 1000);
+
         $validated = $request->validated();
         $file = $validated['file'];
 
@@ -29,19 +31,20 @@ class MediaController extends Controller
 
         $user = auth()->user();
 
-        $upload = Storage::put("/", $file);
+        $exifDate = @exif_read_data($file)['DateTimeOriginal'];
 
+        $upload = Storage::put("/", $file);
+        if ($exifDate === null) {
+            $original_date = gmdate("Y-m-d H:i:s", $ctime);
+        } else {
+            $original_date = $exifDate;
+        }
         Media::create([
             'user_id' => $user->id,
             'name' => $name,
             'file_name' => $file->getClientOriginalName(),
-            'mime_type' => $file->getClientMimeType(),
-            'path' => "media/" . $user->id,
-            'img_url' => "/storage/media/" . $user->id . "/" . $name,
-            'disk' => 'public',
-            'collection' => $request->get('collection'),
             'size' => $file->getSize(),
-            'original_date' => exif_read_data($file)['DateTimeOriginal'],
+            'original_date' => $original_date,
         ]);
 
         return back()->with('status', 'Image Uploaded Successfully');

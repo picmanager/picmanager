@@ -14,11 +14,6 @@ return new class extends Migration {
 
             $table->string('name');
             $table->string('file_name');
-            $table->string('mime_type');
-            $table->string('path');
-            $table->string('img_url');
-            $table->string('disk')->default('public');
-            $table->string('collection')->nullable();
             $table->dateTime('original_date')->nullable();
             $table->unsignedBigInteger('size');
 
