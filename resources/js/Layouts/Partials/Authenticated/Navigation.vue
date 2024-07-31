@@ -183,7 +183,7 @@ const disk: any = usePage().props.disk;
                     <p class="">Server Online</p>
                 </div>
                 <div class="flex justify-between justify-items-center">
-                    <button type="button" class="">v0.1-dev</button>
+                    <button type="button" class="">v0.2-dev</button>
                 </div>
             </div>
         </div>

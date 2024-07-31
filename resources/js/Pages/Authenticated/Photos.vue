@@ -51,11 +51,12 @@ function closeModal() {
                     <span class="w-full">{{ item.date }}</span>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<!--                <div class="grid grid-cols-3 md:grid-cols-3 gap-4">-->
+                <div class="flex flex-row flex-wrap w-full gap-1.5">
                     <div v-for="photo in item.photos" @click="showModal(imgUrl(photo))">
                         <img
                             :src="imgUrl(photo)"
-                            class="h-auto max-w-full rounded-lg"
+                            class="w-72 h-56"
                             alt=""
                         >
                     </div>

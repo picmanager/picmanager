@@ -5,6 +5,7 @@ import ThemeSwitch from "@/Layouts/Partials/Authenticated/ThemeSwitch.vue";
 import { Cog8ToothIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/vue/24/outline";
 import { PencilIcon } from "@heroicons/vue/24/solid";
 import {Link} from "@inertiajs/vue3";
+import DropdownLink from "@/Components/Authenticated/DropdownLink.vue";
 
 </script>
 
@@ -177,7 +178,11 @@ import {Link} from "@inertiajs/vue3";
                                     </Link>
                                 </div>
                                 <div class="mb-4 flex flex-col">
-                                    <Link :href="route('logout')" method="post">
+                                    <Link
+                                        :href="route('logout')"
+                                        method="post"
+                                        as="button"
+                                    >
 
                                     <button
                                         type="button"
