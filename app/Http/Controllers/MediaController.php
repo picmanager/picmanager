@@ -31,6 +31,7 @@ class MediaController extends Controller
         $user = auth()->user();
 
         foreach ($images as $key => $image) {
+            dd(exif_read_data($image));
             $name = $image->hashName();
             $exifDate = @exif_read_data($image)['DateTimeOriginal'];
             $upload = Storage::put("/", $image);
