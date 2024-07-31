@@ -16,7 +16,14 @@ return new class extends Migration {
             $table->string('file_name');
             $table->dateTime('original_date')->nullable();
             $table->unsignedBigInteger('size');
-
+            $table->string('make_model')->nullable();
+            $table->string('aperture')->nullable();
+            $table->string('exposure_time')->nullable();
+            $table->string('focal_length')->nullable();
+            $table->string('iso')->nullable();
+            $table->string('width')->nullable();
+            $table->string('height')->nullable();
+            $table->string('megapixel')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MediaRequest;
 use App\Models\Media;
-use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -16,7 +14,6 @@ class MediaController extends Controller
      */
     public function index()
     {
-
         return Inertia::render('Authenticated/Photos', [
             'data' => $this->getData(),
         ]);
@@ -25,29 +22,12 @@ class MediaController extends Controller
     public function store(MediaRequest $request)
     {
         $cTimes = $request['ctimes'];
-
         $validated = $request->validated();
         $images = $validated['images'];
-        $user = auth()->user();
+        $id = auth()->user()->id;
 
         foreach ($images as $key => $image) {
-            $name = $image->hashName();
-            $exifDate = @exif_read_data($image)['DateTimeOriginal'];
-            $upload = Storage::put("/", $image);
-
-            if ($exifDate === null) {
-                $original_date = gmdate("Y-m-d H:i:s", ($cTimes[$key]['ctime'] / 1000));
-            } else {
-                $original_date = $exifDate;
-            }
-
-            Media::create([
-                'user_id' => $user->id,
-                'name' => $name,
-                'file_name' => $image->getClientOriginalName(),
-                'size' => $image->getSize(),
-                'original_date' => $original_date,
-            ]);
+            $this->storeData($cTimes, $key, $image, $id);
         }
 
         return back()->with('status', 'Image Uploaded Successfully');
@@ -105,5 +85,72 @@ class MediaController extends Controller
         }
 
         return $data;
+    }
+
+    private function storeData($cTimes, $key, $image, $id)
+    {
+        $name = $image->hashName();
+        $upload = Storage::put("/", $image);
+
+        if (@exif_read_data($image)['DateTime'] === null) {
+            $original_date = gmdate("Y-m-d H:i:s", ($cTimes[$key]['ctime'] / 1000));
+        } else {
+            $original_date = exif_read_data($image)['DateTime'];
+        }
+
+        if (@exif_read_data($image)['COMPUTED']['ApertureFNumber'] === null) {
+            $aperture = null;
+        } else {
+            $aperture = exif_read_data($image)['COMPUTED']['ApertureFNumber'];
+        }
+
+        if (@exif_read_data($image)['ExposureTime'] === null) {
+            $exposure = null;
+        } else {
+            $exposure = exif_read_data($image)['ExposureTime'];
+        }
+
+        if (@exif_read_data($image)['FocalLength'] === null) {
+            $focalLength = null;
+        } else {
+            $focalOriginal = exif_read_data($image)['FocalLength'];
+            $focal = explode('/', $focalOriginal);
+            $focalLength = $focal[0] / $focal[1];
+        }
+
+        if (@exif_read_data($image)['ISOSpeedRatings'] === null) {
+            $iso = null;
+        } else {
+            $iso = exif_read_data($image)['ISOSpeedRatings'];
+        }
+
+        if (@exif_read_data($image)['ImageWidth'] === null) {
+            $width = getimagesize($image)[0];
+        } else {
+            $width = exif_read_data($image)['ImageWidth'];
+        }
+
+        if (@exif_read_data($image)['ImageLength'] === null) {
+            $height = getimagesize($image)[1];
+        } else {
+            $height = exif_read_data($image)['ImageLength'];
+        }
+
+        $megapixel = ($width * $height) / 1000000;
+
+        Media::create([
+            'user_id' => $id,
+            'name' => $name,
+            'file_name' => $image->getClientOriginalName(),
+            'size' => $image->getSize(),
+            'original_date' => $original_date,
+            'aperture' => $aperture,
+            'exposure_time' => $exposure,
+            'focal_length' => $focalLength . 'mm',
+            'iso' => $iso,
+            'width' => $width,
+            'height' => $height,
+            'megapixel' => $megapixel,
+        ]);
     }
 }
