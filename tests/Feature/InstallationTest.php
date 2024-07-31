@@ -24,5 +24,5 @@ test('installation process', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route('media.index', absolute: false));
 });
