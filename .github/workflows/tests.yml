@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2, 8.3]
+        php: [8.3]
 
     name: PHP ${{ matrix.php }}
 
@@ -39,6 +39,9 @@ jobs:
 
       - name: Generate app key
         run: php artisan key:generate
+
+      - name: Install NPM dependencies
+        run: npm install --prefer-dist --no-interaction --no-progress
 
       - name: Generate static files
         run: npm run build
