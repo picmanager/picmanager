@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {useForm} from "@inertiajs/vue3";
+import axios from "axios";
 
 defineProps<{
     showPhoto?: boolean,
@@ -7,25 +8,32 @@ defineProps<{
 }>();
 
 const form = useForm({
-    images: [],
-    ctimes: [],
+    image: File,
+    ctime: <Number>0,
 });
 
-const submit = () => {
-    form.post(route('media.store'));
-};
-
-function onFileChanged($event: Event) {
-    const target = $event.target as HTMLInputElement;
-    if (target && target.files) {
-        (form.images as any) = target.files;
-        for (const item of target.files) {
-            form.ctimes.push({ctime: item.lastModified})
+const submit = async () => {
+    await axios.post('http://localhost:8000/upload', {
+        image: form.image,
+        ctime: form.ctime,
+    }, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
         }
-    }
-    submit();
+    })
 }
 
+async function onFileChanged($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    if (target && target.files) {
+        for (const file of target.files) {
+            (form.image as any) = file;
+            form.ctime = file.lastModified;
+            await submit();
+        }
+        window.location.href = "/photos"
+    }
+}
 </script>
 
 <template>

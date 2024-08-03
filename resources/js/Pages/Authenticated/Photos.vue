@@ -53,10 +53,12 @@ function closeModal() {
 
 <!--                <div class="grid grid-cols-3 md:grid-cols-3 gap-4">-->
                 <div class="flex flex-row flex-wrap w-full gap-1.5">
-                    <div v-for="photo in item.photos" @click="showModal(imgUrl(photo))">
+                    <div v-for="(photo, index) in item.photos.name" @click="showModal(imgUrl(photo))">
                         <img
+                            :key="index"
                             :src="imgUrl(photo)"
-                            class="w-72 h-56"
+                            class="h-56"
+                            :class="{'w-80': item.photos.orientation === 'landscape', 'w-40': item.photos.orientation === 'portrait'}"
                             alt=""
                         >
                     </div>

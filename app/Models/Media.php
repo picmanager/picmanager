@@ -12,7 +12,15 @@ class Media extends Model
         'name',
         'file_name',
         'size',
-        'original_date'
+        'original_date',
+        'make_model',
+        'aperture',
+        'exposure_time',
+        'focal_length',
+        'iso',
+        'width',
+        'height',
+        'megapixel',
     ];
 
     public function user(): BelongsTo
