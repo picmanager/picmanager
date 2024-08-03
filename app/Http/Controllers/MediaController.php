@@ -82,7 +82,7 @@ class MediaController extends Controller
 
 
             foreach ($photo as $result) {
-                $data[$key]['photos']['name'][] = $result['name'];
+                $data[$key]['photos']['name'][] = $result;
                 if ($result['width'] > $result['height']) {
                     $data[$key]['photos']['orientation'][] = 'landscape';
                 } else {
