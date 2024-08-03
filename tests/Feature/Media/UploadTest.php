@@ -7,19 +7,17 @@ test('user can upload file', function () {
     $user = User::factory()->create();
 
     $file = UploadedFile::fake()->image('avatar.jpg');
-    $ctime['ctime'] = time() * 1000;
-    $images[] = $file;
-    $ctimes[] = $ctime;
+    $ctime = time() * 1000;
     $response = $this
         ->actingAs($user)
         ->post('/upload', [
-            'images' => $images,
-            'ctimes' => $ctimes,
+            'image' => $file,
+            'ctime' => $ctime,
         ]);
 
     Storage::disk('picmanager')->assertExists($file->hashName());
 
-    $response->assertRedirectToRoute('home');
+    $response->assertRedirectToRoute('media.index');
 
     $response->assertStatus(302);
 });
