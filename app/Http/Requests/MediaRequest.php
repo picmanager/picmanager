@@ -10,7 +10,7 @@ class MediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'images.*' => [
+            'image' => [
                 'required',
                 'extensions:jpg,jpeg,png,bmp,gif,svg,webp',
                 'mimes:jpg,jpeg,png,bmp,gif,svg,webp',

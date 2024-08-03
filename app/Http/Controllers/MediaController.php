@@ -21,16 +21,15 @@ class MediaController extends Controller
 
     public function store(MediaRequest $request)
     {
-        $cTimes = $request['ctimes'];
+        $cTime = $request['ctime'];
         $validated = $request->validated();
-        $images = $validated['images'];
+        $image = $validated['image'];
         $id = auth()->user()->id;
 
-        foreach ($images as $key => $image) {
-            $this->storeData($cTimes, $key, $image, $id);
-        }
+        $this->storeData($cTime, $image, $id);
 
-        return back()->with('status', 'Image Uploaded Successfully');
+        return to_route('media.index');
+//        return back()->with('status', 'Image Uploaded Successfully');
     }
 
     public function show(Media $media)
@@ -79,23 +78,38 @@ class MediaController extends Controller
             $photo = Media::query()
                 ->where('user_id', auth()->user()->id)
                 ->where('original_date', 'like', '%' . $time . '%')->get();
+
+
+
             foreach ($photo as $result) {
-                $data[$key]['photos'][] = $result['name'];
+                $data[$key]['photos']['name'][] = $result['name'];
+                if ($result['width'] > $result['height']) {
+                    $data[$key]['photos']['orientation'][] = 'landscape';
+                } else {
+                    $data[$key]['photos']['orientation'][] = 'portrait';
+                }
             }
         }
 
         return $data;
     }
 
-    private function storeData($cTimes, $key, $image, $id)
+    private function storeData($cTime, $image, $id)
     {
         $name = $image->hashName();
-        $upload = Storage::put("/", $image);
+        Storage::put("/", $image);
+//        dd(exif_read_data($image));
 
         if (@exif_read_data($image)['DateTime'] === null) {
-            $original_date = gmdate("Y-m-d H:i:s", ($cTimes[$key]['ctime'] / 1000));
+            $original_date = gmdate("Y-m-d H:i:s", ($cTime / 1000));
         } else {
             $original_date = exif_read_data($image)['DateTime'];
+        }
+
+        if (@exif_read_data($image)['Make'] === null || @exif_read_data($image)['Model'] === null) {
+            $make_model = null;
+        } else {
+            $make_model = exif_read_data($image)['Make'] . ' ' . exif_read_data($image)['Model'];
         }
 
         if (@exif_read_data($image)['COMPUTED']['ApertureFNumber'] === null) {
@@ -115,7 +129,7 @@ class MediaController extends Controller
         } else {
             $focalOriginal = exif_read_data($image)['FocalLength'];
             $focal = explode('/', $focalOriginal);
-            $focalLength = $focal[0] / $focal[1];
+            $focalLength = ($focal[0] / $focal[1]) . 'mm';
         }
 
         if (@exif_read_data($image)['ISOSpeedRatings'] === null) {
@@ -146,11 +160,12 @@ class MediaController extends Controller
             'original_date' => $original_date,
             'aperture' => $aperture,
             'exposure_time' => $exposure,
-            'focal_length' => $focalLength . 'mm',
+            'focal_length' => $focalLength,
             'iso' => $iso,
             'width' => $width,
             'height' => $height,
             'megapixel' => $megapixel,
+            'make_model' => $make_model,
         ]);
     }
 }
