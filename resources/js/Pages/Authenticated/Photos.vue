@@ -23,7 +23,7 @@ const excludeRef = ref()
 const isInfoOpen = ref(false);
 const isExtraMenuOpen = ref(false);
 const isModalOpen = ref(false);
-const modalImage = ref('');
+const modalImage = ref();
 
 function imgUrl(url: any) {
     return new URL(`../../../../storage/app/picmanager/${url}`, import.meta.url).href
@@ -41,7 +41,7 @@ function showModal(src: any) {
     }
 }
 
-function showSize(size) {
+function showSize(size: any) {
     if (size >= 1000000) {
         return `${Math.round(((size / 1000000) + Number.EPSILON) * 100) / 100} MiB`
     } else {
@@ -49,7 +49,7 @@ function showSize(size) {
     }
 }
 
-function showDate(date) {
+function showDate(date: any) {
     const d = new Date(date)
     const weekday = [
         "Sun",
@@ -77,8 +77,8 @@ function showDate(date) {
     return `${weekday[d.getDay()]}, ${month[d.getMonth()]} ${d.getDate()}  ${d.getFullYear()}`;
 }
 
-function showTime(time) {
-    function addZero(i) {
+function showTime(time: any) {
+    function addZero(i: any) {
         if (i < 10) {
             i = "0" + i
         }
@@ -549,7 +549,7 @@ useClickOutside(
                                     <p>{{ modalImage.aperture }}</p>
                                     <p>{{ modalImage.exposure_time }}</p>
                                     <p>{{ modalImage.focal_length }}</p>
-                                    <p v-if="modalImage.iso !== null">ISO{{ modalImage.iso }}</p>
+                                    <p v-if="modalImage.iso !== null">ISO{{ (modalImage).iso }}</p>
                                 </div>
                             </div>
                         </div>
